@@ -7,8 +7,26 @@ package c482;
 
 /**
  *
- * @author FoxyLady
+ * @author Ayumu Suzuki
  */
-public class InHouse {
+public class InHouse extends Part{
+    private int machineId;
+    /*
+    constructor
+    */
+    public InHouse(int id, String name, double price, 
+            int stock, int min, int max, int machineId){
+        super(id, name, price, stock, min, max);
+        this.machineId = machineId;
+    }
     
+    /*
+    setter
+    */
+    public void setMahineId(int machineId){this.machineId = machineId;}
+    
+    /*
+    getter
+    */
+    public int getMachineId(){return this.machineId;}
 }

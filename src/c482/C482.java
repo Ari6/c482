@@ -19,10 +19,11 @@ public class C482 extends Application {
     
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("MainScreen.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/View/MainScreen.fxml"));
         
         Scene scene = new Scene(root);
         
+        stage.setTitle("Main");
         stage.setScene(scene);
         stage.show();
     }

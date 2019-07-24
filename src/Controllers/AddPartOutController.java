@@ -11,13 +11,13 @@ import c482.Part;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
@@ -26,11 +26,11 @@ import javafx.stage.Stage;
 /**
  * FXML Controller class
  *
- * @author Ayumu Suzuki
+ * @author Ayumu Suzuki <asuzuk2@wgu.edu>
  */
-public class AddPartGController implements Initializable {
-    @FXML private ToggleGroup A;
+public class AddPartOutController implements Initializable {
     @FXML private RadioButton inHouse;
+    @FXML private ToggleGroup A;
     @FXML private RadioButton outsourced;
     @FXML private TextField partId;
     @FXML private TextField name;
@@ -38,29 +38,64 @@ public class AddPartGController implements Initializable {
     @FXML private TextField priceCost;
     @FXML private TextField max;
     @FXML private TextField min;
-    @FXML private TextField machineId;
+    @FXML private TextField companyName;
     @FXML private Button saveButton;
     @FXML private Button cancelButton;
+    
     
     /**
      * Initializes the controller class.
      */
-    
-    @FXML private void inHouseSelect() throws IOException{
+    @Override
+    public void initialize(URL url, ResourceBundle rb) {
+        // TODO
+    }    
 
-    } 
+    @FXML
+    private void inHouseSelect(ActionEvent event) throws IOException {
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("/View/AddPartG.fxml"));
+        loader.load();
+        
+        AddPartGController addPartController = loader.getController();
+        addPartController.setId(partId.getText());
+        
+        Parent root = loader.getRoot();
+        
+        Stage stageOld = (Stage) inHouse.getScene().getWindow();
+        stageOld.close();
+        
+        
+        Stage stage = new Stage();
+        Scene scene = new Scene(root);
+        
+        stage.setTitle("Product Add");
+        stage.setScene(scene);
+        stage.show();
+    }
+
+    @FXML
+    private void outsourcedSelect(ActionEvent event) {
+    }
+    
+    public void setId(int i) {
+        partId.setText(String.valueOf(i + 1));
+    }
+    public void setId(String s){
+        partId.setText(s);
+    }
     
     @FXML private void saveButtonOnAction() throws IOException{
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("/View/MainScreen.fxml"));
         loader.load();
         MainScreenController mainScreenController = loader.getController();
-                int partIdArg;
+        
+        int partIdArg;
         double priceCostArg;
         int invArg;
         int minArg;
         int maxArg;
-        int machineIdArg;
         
         try{
             partIdArg = Integer.parseInt(partId.getText());
@@ -87,15 +122,11 @@ public class AddPartGController implements Initializable {
         } catch (NumberFormatException e){
             maxArg = 0;
         }
-        try{
-            machineIdArg = Integer.parseInt(machineId.getText());
-        } catch (NumberFormatException e){
-            machineIdArg = 0;
-        }
-        Part addedPart = new InHouse(partIdArg, 
+
+        Part addedPart = new Outsourced(partIdArg, 
                 name.getText(), priceCostArg, 
-                invArg, minArg, maxArg, machineIdArg);
-        mainScreenController.inventory.addPart(addedPart);
+                invArg, minArg, maxArg, companyName.getText());
+
         mainScreenController.showParts(addedPart);
 
         Stage stageOld = (Stage) saveButton.getScene().getWindow();
@@ -113,37 +144,4 @@ public class AddPartGController implements Initializable {
         Stage stage = (Stage) cancelButton.getScene().getWindow();
         stage.close();
     }
-    
-    @FXML private void outsourcedSelect() throws IOException{
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("/View/AddPartOut.fxml"));
-        loader.load();
-        AddPartOutController addPartOutController = loader.getController();
-        addPartOutController.setId(partId.getText());
-        
-        Stage stageOld = (Stage) outsourced.getScene().getWindow();
-        stageOld.close();
-        
-        Parent root = loader.getRoot();
-
-        Stage stage = new Stage();
-        Scene scene = new Scene(root);
-        
-        stage.setTitle("Product Add");
-        stage.setScene(scene);
-        stage.show();
-    }
-    
-    public void setId(int i) {
-        partId.setText(String.valueOf(i + 1));
-    }
-    public void setId(String s){
-        partId.setText(s);
-    }
-    
-    @Override
-    public void initialize(URL url, ResourceBundle rb) {
-        // TODO
-    }    
-    
 }

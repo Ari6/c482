@@ -11,7 +11,7 @@ import javafx.collections.ObservableList;
  *
  * @author Ayumu Suzuki
  */
-class Product {
+public class Product {
     private ObservableList<Part> associatedParts;
     private int id;
     private String name;
@@ -42,7 +42,7 @@ class Product {
     public void setMin(int min){this.min = min;}
     public void setMax(int max) {this.max = max;}
     public void setPrice(int max){this.price = max;}
-    
+
     /*
     getters
     */
@@ -56,16 +56,22 @@ class Product {
     /*
     add
     */
-    public void addAssociatedPart(Part part){}
+    public void addAssociatedPart(Part part){
+        associatedParts.add(part);
+    }
     
     /*
     delete
     */
-    public void deleteAssociatedPart(Part associatedPart){}
+    public void deleteAssociatedPart(Part associatedPart){
+        associatedParts.remove(associatedPart);
+    }
     
     /*
     get all
     */
-    public ObservableList<Part> getAllAssociatedParts(){}
+    public ObservableList<Part> getAllAssociatedParts(){
+        return associatedParts;
+    }
 
 }
