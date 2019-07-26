@@ -160,11 +160,23 @@ public class AddProductController implements Initializable {
             popUp.setScene(popScene);
             popUp.setTitle("Error");
             popUp.show();
-        } else {        
+        } else if(assocPriceArg < assocTable.getItems().stream().map(a->a.getPrice()).reduce(0.0, (a,b)->a+b)){
+            FXMLLoader popLoader = new FXMLLoader();
+            popLoader.setLocation(getClass().getResource("/View/popup.fxml"));
+            popLoader.load();
+            
+            PopupController popCon = popLoader.getController();
+            popCon.setMessage("You have to set product's price above the total price of parts.");
+            Stage popUp = new Stage();
+            Scene popScene = new Scene(popLoader.getRoot());
+            popUp.setScene(popScene);
+            popUp.setTitle("Error");
+            popUp.show();
+        } else {
             Product newProduct = new Product(assocIdArg, name.getText(), assocPriceArg,
                 assocInvArg, assocMinArg, assocMaxArg);
             inventory.addProduct(newProduct);
-            for(Part p : assocTable.getSelectionModel().getSelectedItems()){
+            for(Part p : assocTable.getItems()){
                 inventory.getAllProducts().get(inventory.getAllProducts().indexOf(newProduct)).addAssociatedPart(p);
             }
 
