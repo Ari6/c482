@@ -209,6 +209,18 @@ public class AddProductController implements Initializable {
 
     @FXML
     private void searchButtonOnAction(ActionEvent event) {
+        int searchId;
+        String searchName;
+        try{
+            searchId = Integer.parseInt(search.getText());
+            partsTable.setItems(FXCollections.observableArrayList(inventory.lookupPart(searchId)));
+        } catch (NumberFormatException e) {
+            searchName = search.getText();
+            if(searchName.equals("")){
+                partsTable.setItems(inventory.getAllParts());
+            } else {
+                partsTable.setItems(inventory.lookupPart(searchName));
+            }
+        }        
     }
-    
 }

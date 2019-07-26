@@ -80,30 +80,43 @@ public class ModifyPartOutController implements Initializable {
         } catch (NumberFormatException e){
             maxArg = 0;
         }
-
-        Part addedPart = new Outsourced(partIdArg, 
-                name.getText(), priceCostArg, 
-                invArg, minArg, maxArg, companyName.getText());
-        int i = 0;
-        int index = -1;
-        for(Part p : inventory.getAllParts()){
-            if(addedPart.getId() == p.getId()){
-                index = i;
-            } else {
-                i++;
+        if(invArg < minArg || invArg > maxArg){
+            FXMLLoader popLoader = new FXMLLoader();
+            popLoader.setLocation(getClass().getResource("/View/popup.fxml"));
+            popLoader.load();
+            
+            PopupController popCon = popLoader.getController();
+            popCon.setMessage("You have to set inventory between min and max.");
+            Stage popUp = new Stage();
+            Scene popScene = new Scene(popLoader.getRoot());
+            popUp.setScene(popScene);
+            popUp.setTitle("Error");
+            popUp.show();
+        } else {
+            Part addedPart = new Outsourced(partIdArg, 
+                    name.getText(), priceCostArg, 
+                    invArg, minArg, maxArg, companyName.getText());
+            int i = 0;
+            int index = -1;
+            for(Part p : inventory.getAllParts()){
+                if(addedPart.getId() == p.getId()){
+                    index = i;
+                } else {
+                    i++;
+                }
             }
-        }
-        inventory.updatePart(index, addedPart);
+            inventory.updatePart(index, addedPart);
 
-        Stage stageOld = (Stage) saveButton.getScene().getWindow();
-        stageOld.close();
-        
-        Stage stage = new Stage();
-        Scene scene = new Scene(loader.getRoot());
-        
-        stage.setTitle("Main");
-        stage.setScene(scene);
-        stage.show();        
+            Stage stageOld = (Stage) saveButton.getScene().getWindow();
+            stageOld.close();
+
+            Stage stage = new Stage();
+            Scene scene = new Scene(loader.getRoot());
+
+            stage.setTitle("Main");
+            stage.setScene(scene);
+            stage.show();        
+        }
     }
     
     @FXML void inHouseRadioButtonOnAction() throws IOException{
