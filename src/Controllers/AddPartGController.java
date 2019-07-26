@@ -6,7 +6,7 @@
 package Controllers;
 
 import c482.InHouse;
-import c482.Outsourced;
+import c482.Inventory;
 import c482.Part;
 import java.io.IOException;
 import java.net.URL;
@@ -17,7 +17,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
@@ -41,6 +40,7 @@ public class AddPartGController implements Initializable {
     @FXML private TextField machineId;
     @FXML private Button saveButton;
     @FXML private Button cancelButton;
+    Inventory inventory = new Inventory();
     
     /**
      * Initializes the controller class.
@@ -55,7 +55,7 @@ public class AddPartGController implements Initializable {
         loader.setLocation(getClass().getResource("/View/MainScreen.fxml"));
         loader.load();
         MainScreenController mainScreenController = loader.getController();
-                int partIdArg;
+        int partIdArg;
         double priceCostArg;
         int invArg;
         int minArg;
@@ -92,26 +92,49 @@ public class AddPartGController implements Initializable {
         } catch (NumberFormatException e){
             machineIdArg = 0;
         }
-        Part addedPart = new InHouse(partIdArg, 
-                name.getText(), priceCostArg, 
-                invArg, minArg, maxArg, machineIdArg);
-        mainScreenController.inventory.addPart(addedPart);
-        mainScreenController.showParts(addedPart);
+        if(invArg < minArg || invArg > maxArg){
+            FXMLLoader popLoader = new FXMLLoader();
+            popLoader.setLocation(getClass().getResource("/View/popup.fxml"));
+            popLoader.load();
+            
+            PopupController popCon = popLoader.getController();
+            popCon.setMessage("You have to set inventory between min and max.");
+            Stage popUp = new Stage();
+            Scene popScene = new Scene(popLoader.getRoot());
+            popUp.setScene(popScene);
+            popUp.setTitle("Error");
+            popUp.show();
+        } else {
+            Part addedPart = new InHouse(partIdArg, 
+                    name.getText(), priceCostArg, 
+                    invArg, minArg, maxArg, machineIdArg);
+            inventory.addPart(addedPart);
 
-        Stage stageOld = (Stage) saveButton.getScene().getWindow();
-        stageOld.close();
-        
-        Stage stage = new Stage();
-        Scene scene = new Scene(loader.getRoot());
-        
-        stage.setTitle("Main");
-        stage.setScene(scene);
-        stage.show();
+            Stage stageOld = (Stage) saveButton.getScene().getWindow();
+            stageOld.close();
+
+            Stage stage = new Stage();
+            Scene scene = new Scene(loader.getRoot());
+
+            stage.setTitle("Main");
+            stage.setScene(scene);
+            stage.show();
+        }
     }
     
     @FXML private void cancelButtonOnAction() throws IOException{
-        Stage stage = (Stage) cancelButton.getScene().getWindow();
-        stage.close();
+        Stage oldStage = (Stage) cancelButton.getScene().getWindow();
+        oldStage.close();
+        
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("/View/MainScreen.fxml"));
+        loader.load();
+        
+        Stage stage = new Stage();
+        Scene scene = new Scene(loader.getRoot());
+        stage.setTitle("Main");
+        stage.setScene(scene);
+        stage.show();
     }
     
     @FXML private void outsourcedSelect() throws IOException{
@@ -135,7 +158,7 @@ public class AddPartGController implements Initializable {
     }
     
     public void setId(int i) {
-        partId.setText(String.valueOf(i + 1));
+        partId.setText(String.valueOf(i));
     }
     public void setId(String s){
         partId.setText(s);

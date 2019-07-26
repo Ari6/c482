@@ -12,10 +12,8 @@ import c482.Part;
 import c482.Product;
 import java.io.IOException;
 import java.net.URL;
-import java.util.Comparator;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -26,7 +24,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
-import javafx.event.ActionEvent;
+import javafx.scene.control.TextField;
 /**
  *
  * @author Ayumu Suzuki
@@ -60,7 +58,8 @@ public class MainScreenController implements Initializable {
     @FXML private TableColumn<Product, String> productsProductName;
     @FXML private TableColumn<Product, Integer> productsInventoryLevel;
     @FXML private TableColumn<Product, Double> productsPricePerUnit;
-    
+    @FXML private TextField partsSearch;
+    @FXML private TextField productsSearch;
     
     @FXML
     private void exitButtonOnClick(){
@@ -69,11 +68,30 @@ public class MainScreenController implements Initializable {
     }
 
     @FXML
-    private void partsSearchButtonOnClick() {}
+    private void partsSearchButtonOnAction() {
+        int searchId;
+        String searchName;
+        try{
+            searchId = Integer.parseInt(partsSearch.getText());
+            partsTable.setItems(FXCollections.observableArrayList(inventory.lookupPart(searchId)));
+        } catch (NumberFormatException e) {
+            searchName = partsSearch.getText();
+            if(searchName.equals("")){
+                partsTable.setItems(inventory.getAllParts());
+            } else {
+                partsTable.setItems(inventory.lookupPart(searchName));
+            }
+        }
+    }
     
     @FXML
     private void partsAddButtonOnClick() throws Exception{
-        int nextId = inventory.getAllParts().stream().max((a,b) -> a.getId() - b.getId()).get().getId();
+        int nextId;
+        try{
+            nextId = inventory.getAllParts().stream().max((a,b) -> a.getId() - b.getId()).get().getId() + 1;
+        } catch (Exception e){
+            nextId = 1;
+        }
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("/View/AddPartG.fxml"));
         loader.load();
@@ -97,30 +115,30 @@ public class MainScreenController implements Initializable {
     @FXML
     private void partsModifyButtonOnClick()throws IOException{
         try{
-        ModifyPartGController modifyPartController;
-        ModifyPartOutController modifyPartOutController;
-        FXMLLoader loader = new FXMLLoader();
+            ModifyPartGController modifyPartController;
+            ModifyPartOutController modifyPartOutController;
+            FXMLLoader loader = new FXMLLoader();
 
-        if(partsTable.getSelectionModel().getSelectedItem() instanceof InHouse){
-            loader.setLocation(getClass().getResource("/View/ModifyPartG.fxml"));
-            loader.load();
-            modifyPartController = loader.getController();
-            modifyPartController.sendPart(partsTable.getSelectionModel().getSelectedItem());
-        } else {
-            loader.setLocation(getClass().getResource("/View/ModifyPartOut.fxml"));
-            loader.load();
-            modifyPartOutController = loader.getController();
-            modifyPartOutController.sendPart(partsTable.getSelectionModel().getSelectedItem());
-        }
-        
-        Stage stage = (Stage) partsModifyButton.getScene().getWindow();
-        Parent root = loader.getRoot();
-        Scene scene = new Scene(root);
-        
-        stage.setTitle("Parts Modify");
-        
-        stage.setScene(scene);
-        stage.show();
+            if(partsTable.getSelectionModel().getSelectedItem() instanceof InHouse){
+                loader.setLocation(getClass().getResource("/View/ModifyPartG.fxml"));
+                loader.load();
+                modifyPartController = loader.getController();
+                modifyPartController.sendPart(partsTable.getSelectionModel().getSelectedItem());
+            } else {
+                loader.setLocation(getClass().getResource("/View/ModifyPartOut.fxml"));
+                loader.load();
+                modifyPartOutController = loader.getController();
+                modifyPartOutController.sendPart(partsTable.getSelectionModel().getSelectedItem());
+            }
+
+            Stage stage = (Stage) partsModifyButton.getScene().getWindow();
+            Parent root = loader.getRoot();
+            Scene scene = new Scene(root);
+
+            stage.setTitle("Parts Modify");
+
+            stage.setScene(scene);
+            stage.show();
         } catch (NullPointerException e) {
         }
     }
@@ -135,21 +153,41 @@ public class MainScreenController implements Initializable {
     }
     
     @FXML
-    private void productsSearchButtonOnClick(){
-    
+    private void productsSearchButtonOnAction(){
+        int searchId;
+        String searchName;
+        try{
+            searchId = Integer.parseInt(productsSearch.getText());
+            productsTable.setItems(FXCollections.observableArrayList(inventory.lookupProduct(searchId)));
+        } catch (NumberFormatException e) {
+            searchName = productsSearch.getText();
+            if(searchName.equals("")){
+                productsTable.setItems(inventory.getAllProducts());
+            } else {
+                productsTable.setItems(inventory.lookupProduct(searchName));
+            }
+        }        
     }
     
     @FXML
     private void productsAddButtonOnClick() throws Exception {
-        int nextId = inventory.getAllProducts().stream().max((a,b) -> a.getId() - b.getId()).get().getId();
-        
-        Parent root = FXMLLoader.load(getClass().getResource("/View/AddProduct.fxml"));
+        int nextId;
+        try{
+            nextId = (inventory.getAllProducts().stream().max((a,b) -> a.getId() - b.getId()).get().getId()) + 1;
+        } catch (Exception e){
+            nextId = 1;
+        }
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("/View/AddProduct.fxml"));
+        loader.load();
+        AddProductController addProductController = loader.getController();
+        addProductController.setNextId(nextId);
         
         Stage stageOld = (Stage) productsAddButton.getScene().getWindow();
         stageOld.close();
         
         Stage stage = new Stage();
-        Scene scene = new Scene(root);
+        Scene scene = new Scene(loader.getRoot());
         
         stage.setTitle("Product Add");
         stage.setScene(scene);
@@ -157,37 +195,49 @@ public class MainScreenController implements Initializable {
     }
     
     @FXML
-    private void productsModifyButtonOnClick()throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("/View/ModifyProduct.fxml"));
-        
-        Stage stage = new Stage();
-        Scene scene = new Scene(root);
-        
-        stage.setTitle("Product Modify");
-        stage.setScene(scene);
-        stage.show();
+    private void productsModifyButtonOnClick()throws Exception {        
+        try{
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("/View/ModifyProduct.fxml"));
+            loader.load();
+
+            ModifyProductController modifyProductController = loader.getController();
+            modifyProductController.sendProduct(productsTable.getSelectionModel().getSelectedItem());
+
+            Stage oldStage = (Stage) productsModifyButton.getScene().getWindow();
+            oldStage.close();
+
+            Stage stage = new Stage();
+            Scene scene = new Scene(loader.getRoot());
+
+            stage.setTitle("Product Modify");
+            stage.setScene(scene);
+            stage.show();
+        } catch (NullPointerException e) {
+        }
     }
     
     @FXML
-    private void productsDeleteButtonOnClick(){}
-    
-    public void showParts(Part addedPart){
-        partsTable.setItems(inventory.getAllParts());
+    private void productsDeleteButtonOnClick(){
+        inventory.deleteProduct(productsTable.getSelectionModel().getSelectedItem());
     }
-    
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         if(first){
             Part p1 = new InHouse(1, "Part 1", 12.5, 10, 5, 2, 1000);
             Part p2 = new Outsourced(2, "Part 2", 15.0, 20, 10, 4, "Company 1");
             Part p3 = new InHouse(3, "Part 3", 16.5, 25, 4, 3, 1003);
-            ObservableList<Part> ol1 = FXCollections.observableArrayList(p3);
             Product pro1 = new Product(1, "Product 1", 123.4, 3, 1, 2);
-            
+            Product pro2 = new Product(2, "Product 2", 099.4, 9, 9, 9);
+            pro1.addAssociatedPart(p3);
+            pro2.addAssociatedPart(p1);
+            pro2.addAssociatedPart(p2);
             inventory.addPart(p1);
             inventory.addPart(p2);
             inventory.addPart(p3);
             inventory.addProduct(pro1);
+            inventory.addProduct(pro2);
 
         }
             //set parts table

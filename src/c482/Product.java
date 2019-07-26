@@ -5,6 +5,7 @@
  */
 package c482;
 
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 /**
@@ -12,7 +13,7 @@ import javafx.collections.ObservableList;
  * @author Ayumu Suzuki
  */
 public class Product {
-    private ObservableList<Part> associatedParts;
+    private ObservableList<Part> associatedParts = FXCollections.observableArrayList();
     private int id;
     private String name;
     private double price;
@@ -24,7 +25,7 @@ public class Product {
     constructor
     */
     public Product(int id, String name, double price, 
-            int stock, int min, int max){
+        int stock, int min, int max){
         this.id = id;
         this.name = name;
         this.price = price;
@@ -57,21 +58,21 @@ public class Product {
     add
     */
     public void addAssociatedPart(Part part){
-        associatedParts.add(part);
+        this.associatedParts.add(part);
     }
     
     /*
     delete
     */
     public void deleteAssociatedPart(Part associatedPart){
-        associatedParts.remove(associatedPart);
+        this.associatedParts.remove(associatedPart);
     }
     
     /*
     get all
     */
     public ObservableList<Part> getAllAssociatedParts(){
-        return associatedParts;
+        return this.associatedParts;
     }
 
 }

@@ -5,7 +5,7 @@
  */
 package Controllers;
 
-import c482.InHouse;
+import c482.Inventory;
 import c482.Outsourced;
 import c482.Part;
 import java.io.IOException;
@@ -41,7 +41,7 @@ public class AddPartOutController implements Initializable {
     @FXML private TextField companyName;
     @FXML private Button saveButton;
     @FXML private Button cancelButton;
-    
+    Inventory inventory = new Inventory();
     
     /**
      * Initializes the controller class.
@@ -122,22 +122,35 @@ public class AddPartOutController implements Initializable {
         } catch (NumberFormatException e){
             maxArg = 0;
         }
-
-        Part addedPart = new Outsourced(partIdArg, 
-                name.getText(), priceCostArg, 
-                invArg, minArg, maxArg, companyName.getText());
-
-        mainScreenController.showParts(addedPart);
-
-        Stage stageOld = (Stage) saveButton.getScene().getWindow();
-        stageOld.close();
         
-        Stage stage = new Stage();
-        Scene scene = new Scene(loader.getRoot());
-        
-        stage.setTitle("Main");
-        stage.setScene(scene);
-        stage.show();
+        if(invArg < minArg || invArg > maxArg){
+            FXMLLoader popLoader = new FXMLLoader();
+            popLoader.setLocation(getClass().getResource("/View/popup.fxml"));
+            popLoader.load();
+            
+            PopupController popCon = popLoader.getController();
+            popCon.setMessage("You have to set inventory between min and max.");
+            Stage popUp = new Stage();
+            Scene popScene = new Scene(popLoader.getRoot());
+            popUp.setScene(popScene);
+            popUp.setTitle("Error");
+            popUp.show();
+        } else {
+            Part addedPart = new Outsourced(partIdArg, 
+                    name.getText(), priceCostArg, 
+                    invArg, minArg, maxArg, companyName.getText());
+            inventory.addPart(addedPart);
+
+            Stage stageOld = (Stage) saveButton.getScene().getWindow();
+            stageOld.close();
+
+            Stage stage = new Stage();
+            Scene scene = new Scene(loader.getRoot());
+
+            stage.setTitle("Main");
+            stage.setScene(scene);
+            stage.show();
+        }
     }
     
     @FXML private void cancelButtonOnAction() throws IOException{

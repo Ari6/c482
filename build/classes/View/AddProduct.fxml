@@ -180,7 +180,7 @@
                         </GridPane>
                         <VBox prefHeight="246.0" prefWidth="421.0">
                            <children>
-                              <TableView prefHeight="127.0" prefWidth="401.0">
+                              <TableView fx:id="assocTable" prefHeight="127.0" prefWidth="401.0">
                                  <columns>
                                     <TableColumn fx:id="assocId" prefWidth="94.0" text="Part ID" />
                                     <TableColumn fx:id="assocName" prefWidth="104.0" text="Part Name" />

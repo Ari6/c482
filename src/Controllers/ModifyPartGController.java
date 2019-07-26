@@ -6,6 +6,7 @@
 package Controllers;
 
 import c482.InHouse;
+import c482.Inventory;
 import c482.Outsourced;
 import c482.Part;
 import java.io.IOException;
@@ -16,7 +17,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
@@ -42,6 +42,7 @@ public class ModifyPartGController implements Initializable {
 
     @FXML private Button cancelButton;
     @FXML private Button saveButton;
+    Inventory inventory = new Inventory();
     
     public void sendPart(Part pt){
         partId.setText(String.valueOf(pt.getId()));
@@ -172,29 +173,43 @@ public class ModifyPartGController implements Initializable {
         } catch (NumberFormatException e){
             machineIdArg = 0;
         }
-        Part addedPart = new InHouse(partIdArg, 
-                name.getText(), priceCostArg, 
-                invArg, minArg, maxArg, machineIdArg);
-        int i = 0;
-        int index = -1;
-        for(Part p : mainScreenController.inventory.getAllParts()){
-            if(addedPart.getId() == p.getId()){
-                index = i;
-            } else {
-                i++;
+        if(invArg < minArg || invArg > maxArg){
+            FXMLLoader popLoader = new FXMLLoader();
+            popLoader.setLocation(getClass().getResource("/View/popup.fxml"));
+            popLoader.load();
+            
+            PopupController popCon = popLoader.getController();
+            popCon.setMessage("You have to set inventory between min and max.");
+            Stage popUp = new Stage();
+            Scene popScene = new Scene(popLoader.getRoot());
+            popUp.setScene(popScene);
+            popUp.setTitle("Error");
+            popUp.show();
+        } else {        
+            Part addedPart = new InHouse(partIdArg, 
+                    name.getText(), priceCostArg, 
+                    invArg, minArg, maxArg, machineIdArg);
+            int i = 0;
+            int index = -1;
+            for(Part p : inventory.getAllParts()){
+                if(addedPart.getId() == p.getId()){
+                    index = i;
+                } else {
+                    i++;
+                }
             }
+            inventory.updatePart(index, addedPart);
+
+            Stage stageOld = (Stage) saveButton.getScene().getWindow();
+            stageOld.close();
+
+            Stage stage = new Stage();
+            Scene scene = new Scene(loader.getRoot());
+
+            stage.setTitle("Main");
+            stage.setScene(scene);
+            stage.show();
         }
-        mainScreenController.inventory.updatePart(index, addedPart);
-        
-        Stage stageOld = (Stage) saveButton.getScene().getWindow();
-        stageOld.close();
-        
-        Stage stage = new Stage();
-        Scene scene = new Scene(loader.getRoot());
-        
-        stage.setTitle("Main");
-        stage.setScene(scene);
-        stage.show();        
     }
     /**
      * Initializes the controller class.

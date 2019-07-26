@@ -6,6 +6,7 @@
 package Controllers;
 
 import c482.InHouse;
+import c482.Inventory;
 import c482.Outsourced;
 import c482.Part;
 import java.io.IOException;
@@ -39,6 +40,7 @@ public class ModifyPartOutController implements Initializable {
     @FXML private TextField companyName;
     @FXML private Button cancelButton;
     @FXML private Button saveButton;
+    Inventory inventory = new Inventory();
     
     @FXML private void saveButtonOnAction() throws IOException {
         FXMLLoader loader = new FXMLLoader();
@@ -84,15 +86,14 @@ public class ModifyPartOutController implements Initializable {
                 invArg, minArg, maxArg, companyName.getText());
         int i = 0;
         int index = -1;
-        for(Part p : mainScreenController.inventory.getAllParts()){
+        for(Part p : inventory.getAllParts()){
             if(addedPart.getId() == p.getId()){
                 index = i;
             } else {
                 i++;
             }
         }
-        mainScreenController.inventory.updatePart(index, addedPart);
-        mainScreenController.showParts(addedPart);
+        inventory.updatePart(index, addedPart);
 
         Stage stageOld = (Stage) saveButton.getScene().getWindow();
         stageOld.close();
@@ -143,21 +144,34 @@ public class ModifyPartOutController implements Initializable {
         } catch (NumberFormatException e){
             maxArg = 0;
         }
-        
-        Part partToInHouse = new InHouse(partIdArg, name.getText(),
-                priceCostArg, invArg, minArg, maxArg, 0);
-        modifyPartOutController.sendPart(partToInHouse);
-        
-        Stage oldStage = (Stage) inHouseRadioButton.getScene().getWindow();
-        oldStage.close();
-                
-        
-        Stage stage = new Stage();
-        Scene scene = new Scene(loader.getRoot());
-        
-        stage.setTitle("Modify Part");
-        stage.setScene(scene);
-        stage.show();        
+        if(invArg < minArg || invArg > maxArg){
+            FXMLLoader popLoader = new FXMLLoader();
+            popLoader.setLocation(getClass().getResource("/View/popup.fxml"));
+            popLoader.load();
+            
+            PopupController popCon = popLoader.getController();
+            popCon.setMessage("You have to set inventory between min and max.");
+            Stage popUp = new Stage();
+            Scene popScene = new Scene(popLoader.getRoot());
+            popUp.setScene(popScene);
+            popUp.setTitle("Error");
+            popUp.show();
+        } else {        
+            Part partToInHouse = new InHouse(partIdArg, name.getText(),
+                    priceCostArg, invArg, minArg, maxArg, 0);
+            modifyPartOutController.sendPart(partToInHouse);
+
+            Stage oldStage = (Stage) inHouseRadioButton.getScene().getWindow();
+            oldStage.close();
+
+
+            Stage stage = new Stage();
+            Scene scene = new Scene(loader.getRoot());
+
+            stage.setTitle("Modify Part");
+            stage.setScene(scene);
+            stage.show();
+        }
     }
     
     @FXML void outsourcedRadioButtonOnAction() throws IOException{
