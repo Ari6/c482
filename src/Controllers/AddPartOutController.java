@@ -26,7 +26,7 @@ import javafx.stage.Stage;
 /**
  * FXML Controller class
  *
- * @author Ayumu Suzuki <asuzuk2@wgu.edu>
+ * @author A Suzuki
  */
 public class AddPartOutController implements Initializable {
     @FXML private RadioButton inHouse;
@@ -57,7 +57,7 @@ public class AddPartOutController implements Initializable {
         loader.setLocation(getClass().getResource("/View/AddPartG.fxml"));
         loader.load();
         
-        AddPartGController addPartController = loader.getController();
+        AddPartController addPartController = loader.getController();
         addPartController.setId(partId.getText());
         
         Parent root = loader.getRoot();

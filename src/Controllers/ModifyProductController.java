@@ -30,7 +30,7 @@ import javafx.stage.Stage;
 /**
  * FXML Controller class
  *
- * @author Ayumu Suzuki <asuzuk2@wgu.edu>
+ * @author A Suzuki
  */
 public class ModifyProductController implements Initializable {
     @FXML private TextField id;

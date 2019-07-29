@@ -27,7 +27,7 @@ import javafx.stage.Stage;
  *
  * @author Ayumu Suzuki
  */
-public class AddPartGController implements Initializable {
+public class AddPartController implements Initializable {
     @FXML private ToggleGroup A;
     @FXML private RadioButton inHouse;
     @FXML private RadioButton outsourced;

@@ -27,7 +27,7 @@ import javafx.stage.Stage;
 import javafx.scene.control.TextField;
 /**
  *
- * @author Ayumu Suzuki
+ * @author A Suzuki
  */
 public class MainScreenController implements Initializable {
     static private boolean first = true;
@@ -99,7 +99,7 @@ public class MainScreenController implements Initializable {
         Stage stageOld = (Stage) partsAddButton.getScene().getWindow();
         stageOld.close();
         
-        AddPartGController addPartController = loader.getController();
+        AddPartController addPartController = loader.getController();
         addPartController.setId(nextId);
         
         Parent root = loader.getRoot();

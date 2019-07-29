@@ -13,7 +13,7 @@ import javafx.stage.Stage;
 
 /**
  *
- * @author Ayumu Suzuki
+ * @author A Suzuki
  */
 public class C482 extends Application {
     

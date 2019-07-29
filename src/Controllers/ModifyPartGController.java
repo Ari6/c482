@@ -25,7 +25,7 @@ import javafx.stage.Stage;
 /**
  * FXML Controller class
  *
- * @author Ayumu Suzuki
+ * @author A Suzuki
  */
 public class ModifyPartGController implements Initializable {
     @FXML private ToggleGroup A;

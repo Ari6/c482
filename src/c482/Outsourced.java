@@ -7,7 +7,7 @@ package c482;
 
 /**
  *
- * @author FoxyLady
+ * @author A Suzuki
  */
 public class Outsourced extends Part{
     private String companyName;
