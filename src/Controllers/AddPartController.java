@@ -169,14 +169,14 @@ public class AddPartController implements Initializable {
     cancel button
     */
     @FXML private void cancelButtonOnAction(ActionEvent event) throws IOException{
-        ((Stage)((Node)event.getSource()).getScene().getWindow()).close(); //close current window
-
         Parent root = FXMLLoader.load(getClass().getResource("/View/MainScreen.fxml"));
-        Scene scene = new Scene(root);
-        
+        Scene scene = new Scene(root);        
         Stage stage = new Stage();
+        stage.setScene(scene);
         stage.setTitle("Main");
         stage.show();
+        ((Stage)((Node)event.getSource()).getScene().getWindow()).close(); //close current window
+
     }
     
     /*
