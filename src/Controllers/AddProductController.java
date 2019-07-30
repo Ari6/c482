@@ -5,6 +5,7 @@
  */
 package Controllers;
 
+import c482.InputCheck;
 import c482.Inventory;
 import c482.Part;
 import c482.Product;
@@ -114,31 +115,12 @@ public class AddProductController implements Initializable {
         double assocPriceArg;
         int assocMinArg;
         int assocMaxArg;
-        try {
-            assocIdArg = Integer.parseInt(id.getText());
-        } catch (NumberFormatException e) {
-            assocIdArg = 0;
-        }
-        try{
-            assocInvArg = Integer.parseInt(inv.getText());
-        } catch (NumberFormatException e) {
-            assocInvArg = 0;
-        }
-        try{
-            assocPriceArg = Double.parseDouble(price.getText());
-        } catch (NumberFormatException e) {
-            assocPriceArg = 0.0;
-        }
-        try{
-            assocMinArg = Integer.parseInt(min.getText());
-        } catch (NumberFormatException e){
-            assocMinArg = 0;
-        }
-        try {
-            assocMaxArg = Integer.parseInt(max.getText());
-        } catch (NumberFormatException e) {
-            assocMaxArg = 0;
-        }
+        assocIdArg = InputCheck.inputIntChk(id.getText());
+        assocInvArg = InputCheck.inputIntChk(inv.getText());
+        assocPriceArg = InputCheck.inputDoubleChk(price.getText());
+        assocMinArg = InputCheck.inputIntChk(min.getText());
+        assocMaxArg = InputCheck.inputIntChk(max.getText());
+
         if(assocInvArg < assocMinArg || assocInvArg > assocMaxArg){
             FXMLLoader popLoader = new FXMLLoader();
             popLoader.setLocation(getClass().getResource("/View/popup.fxml"));

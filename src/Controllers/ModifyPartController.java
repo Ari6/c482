@@ -6,6 +6,7 @@
 package Controllers;
 
 import c482.InHouse;
+import c482.InputCheck;
 import c482.Inventory;
 import c482.Outsourced;
 import c482.Part;
@@ -69,31 +70,11 @@ public class ModifyPartController implements Initializable {
         int maxArg;
         
         //Input check
-        try{
-            partIdArg = Integer.parseInt(partId.getText());
-        } catch (NumberFormatException e){
-            partIdArg = 0;
-        }
-        try{
-            priceCostArg = Double.parseDouble(priceCost.getText());
-        } catch (NumberFormatException e) {
-            priceCostArg = 0.0;
-        }
-        try{
-            invArg = Integer.parseInt(inv.getText());
-        } catch (NumberFormatException e) {
-            invArg = 0;
-        }
-        try{
-            minArg = Integer.parseInt(min.getText());
-        } catch (NumberFormatException e) {
-            minArg = 0;
-        }
-        try{
-            maxArg = Integer.parseInt(max.getText());
-        } catch (NumberFormatException e){
-            maxArg = 0;
-        }
+        partIdArg = InputCheck.inputIntChk(partId.getText());
+        priceCostArg = InputCheck.inputDoubleChk(priceCost.getText());
+        invArg = InputCheck.inputIntChk(inv.getText());
+        minArg = InputCheck.inputIntChk(min.getText());
+        maxArg = InputCheck.inputIntChk(max.getText());
         
         Part partToInHouse = new InHouse(partIdArg, name.getText(),
                 priceCostArg, invArg, minArg, maxArg, 0);
@@ -123,31 +104,11 @@ public class ModifyPartController implements Initializable {
         int machineIdArg;
         
         //Input check
-        try{
-            partIdArg = Integer.parseInt(partId.getText());
-        } catch (NumberFormatException e){
-            partIdArg = 0;
-        }
-        try{
-            priceCostArg = Double.parseDouble(priceCost.getText());
-        } catch (NumberFormatException e) {
-            priceCostArg = 0.0;
-        }
-        try{
-            invArg = Integer.parseInt(inv.getText());
-        } catch (NumberFormatException e) {
-            invArg = 0;
-        }
-        try{
-            minArg = Integer.parseInt(min.getText());
-        } catch (NumberFormatException e) {
-            minArg = 0;
-        }
-        try{
-            maxArg = Integer.parseInt(max.getText());
-        } catch (NumberFormatException e){
-            maxArg = 0;
-        }
+        partIdArg = InputCheck.inputIntChk(partId.getText());
+        priceCostArg = InputCheck.inputDoubleChk(priceCost.getText());
+        invArg = InputCheck.inputIntChk(inv.getText());
+        minArg = InputCheck.inputIntChk(min.getText());
+        maxArg = InputCheck.inputIntChk(max.getText());
         
         Part partToOutsourced = new Outsourced(partIdArg, name.getText(),
                 priceCostArg, invArg, minArg, maxArg, "");
@@ -189,36 +150,13 @@ public class ModifyPartController implements Initializable {
         int machineIdArg;
         Part addedPart;
         
-        try{
-            partIdArg = Integer.parseInt(partId.getText());
-        } catch (NumberFormatException e){
-            partIdArg = 0;
-        }
-        try{
-            priceCostArg = Double.parseDouble(priceCost.getText());
-        } catch (NumberFormatException e) {
-            priceCostArg = 0.0;
-        }
-        try{
-            invArg = Integer.parseInt(inv.getText());
-        } catch (NumberFormatException e) {
-            invArg = 0;
-        }
-        try{
-            minArg = Integer.parseInt(min.getText());
-        } catch (NumberFormatException e) {
-            minArg = 0;
-        }
-        try{
-            maxArg = Integer.parseInt(max.getText());
-        } catch (NumberFormatException e){
-            maxArg = 0;
-        }
-        try{
-            machineIdArg = Integer.parseInt(machineId.getText());
-        } catch (NumberFormatException e){
-            machineIdArg = 0;
-        }
+        partIdArg = InputCheck.inputIntChk(partId.getText());
+        priceCostArg = InputCheck.inputDoubleChk(priceCost.getText());
+        invArg = InputCheck.inputIntChk(inv.getText());
+        minArg = InputCheck.inputIntChk(min.getText());
+        maxArg = InputCheck.inputIntChk(max.getText());
+        machineIdArg = InputCheck.inputIntChk(machineId.getText());
+                
         if(invArg < minArg || invArg > maxArg){
             FXMLLoader popLoader = new FXMLLoader();
             popLoader.setLocation(getClass().getResource("/View/popup.fxml"));

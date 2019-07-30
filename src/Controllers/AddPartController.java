@@ -6,6 +6,7 @@
 package Controllers;
 
 import c482.InHouse;
+import c482.InputCheck;
 import c482.Inventory;
 import c482.Outsourced;
 import c482.Part;
@@ -98,31 +99,11 @@ public class AddPartController implements Initializable {
         int maxArg;
         int machineIdArg;
         
-        try{
-            partIdArg = Integer.parseInt(partId.getText());
-        } catch (NumberFormatException e){
-            partIdArg = 0;
-        }
-        try{
-            priceCostArg = Double.parseDouble(priceCost.getText());
-        } catch (NumberFormatException e) {
-            priceCostArg = 0.0;
-        }
-        try{
-            invArg = Integer.parseInt(inv.getText());
-        } catch (NumberFormatException e) {
-            invArg = 0;
-        }
-        try{
-            minArg = Integer.parseInt(min.getText());
-        } catch (NumberFormatException e) {
-            minArg = 0;
-        }
-        try{
-            maxArg = Integer.parseInt(max.getText());
-        } catch (NumberFormatException e){
-            maxArg = 0;
-        }
+        partIdArg = InputCheck.inputIntChk(partId.getText());
+        priceCostArg = InputCheck.inputDoubleChk(priceCost.getText());
+        invArg = InputCheck.inputIntChk(inv.getText());
+        minArg = InputCheck.inputIntChk(min.getText());
+        maxArg = InputCheck.inputIntChk(max.getText());
 
         if(invArg < minArg || invArg > maxArg){
             FXMLLoader popLoader = new FXMLLoader(getClass().getResource("/View/popup.fxml"));
@@ -138,11 +119,7 @@ public class AddPartController implements Initializable {
             popUp.showAndWait();
         } else {
             if(inHouse.isSelected()){
-                try{
-                    machineIdArg = Integer.parseInt(machineId.getText());
-                } catch (NumberFormatException e){
-                    machineIdArg = 0;
-                }
+                machineIdArg = InputCheck.inputIntChk(machineId.getText());
                 Part addedPart = new InHouse(partIdArg, 
                         name.getText(), priceCostArg, 
                         invArg, minArg, maxArg, machineIdArg);
