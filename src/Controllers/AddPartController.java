@@ -50,7 +50,7 @@ public class AddPartController implements Initializable {
     Radio buttons controll
     */
     @FXML private void inHouseSelect(ActionEvent event) throws IOException{
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/View/AddPartG.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/View/AddPart.fxml"));
         Parent root = loader.load();
         
         //set partId to inHouse window

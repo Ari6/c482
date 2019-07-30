@@ -20,7 +20,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.ModifyPartOutController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.ModifyPartController">
    <center>
       <GridPane prefHeight="268.0" prefWidth="437.0" BorderPane.alignment="CENTER">
         <columnConstraints>
@@ -80,6 +80,7 @@
                </GridPane.margin>
             </TextField>
             <Label text="Company Name" GridPane.rowIndex="5" />
+            <TextField fx:id="machineId" editable="false" focusTraversable="false" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="5" />
          </children>
       </GridPane>
    </center>

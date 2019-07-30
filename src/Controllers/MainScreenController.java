@@ -95,7 +95,7 @@ public class MainScreenController implements Initializable {
             nextId = 1;
         }
         FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("/View/AddPartG.fxml"));
+        loader.setLocation(getClass().getResource("/View/AddPart.fxml"));
         Parent root = loader.load();
         
         //set id to addPart window
