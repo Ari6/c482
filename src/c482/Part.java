@@ -7,7 +7,7 @@ package c482;
 
 /**
  *
- * @author Ayumu Suzuki
+ * @author A Suzuki
  */
 public abstract class Part {
     private int id;

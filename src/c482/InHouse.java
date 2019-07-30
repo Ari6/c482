@@ -7,7 +7,7 @@ package c482;
 
 /**
  *
- * @author Ayumu Suzuki
+ * @author A Suzuki
  */
 public class InHouse extends Part{
     private int machineId;

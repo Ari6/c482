@@ -14,9 +14,11 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -27,7 +29,7 @@ import javafx.stage.Stage;
 import javafx.scene.control.TextField;
 /**
  *
- * @author Ayumu Suzuki
+ * @author A Suzuki
  */
 public class MainScreenController implements Initializable {
     static private boolean first = true;
@@ -62,9 +64,8 @@ public class MainScreenController implements Initializable {
     @FXML private TextField productsSearch;
     
     @FXML
-    private void exitButtonOnClick(){
-        Stage stage = (Stage) exitButton.getScene().getWindow();
-        stage.close();
+    private void exitButtonOnClick(ActionEvent event){
+        ((Stage)((Node)event.getSource()).getScene().getWindow()).close();
     }
 
     @FXML
@@ -85,61 +86,57 @@ public class MainScreenController implements Initializable {
     }
     
     @FXML
-    private void partsAddButtonOnClick() throws Exception{
+    private void partsAddButtonOnClick(ActionEvent event) throws Exception{
         int nextId;
         try{
+            //get the current last id + 1
             nextId = inventory.getAllParts().stream().max((a,b) -> a.getId() - b.getId()).get().getId() + 1;
         } catch (Exception e){
             nextId = 1;
         }
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("/View/AddPartG.fxml"));
-        loader.load();
+        Parent root = loader.load();
         
-        Stage stageOld = (Stage) partsAddButton.getScene().getWindow();
-        stageOld.close();
-        
-        AddPartGController addPartController = loader.getController();
+        //set id to addPart window
+        AddPartController addPartController = loader.getController();
         addPartController.setId(nextId);
         
-        Parent root = loader.getRoot();
-        
-        Stage stage = new Stage();
         Scene scene = new Scene(root);
-        
+        Stage stage = new Stage();        
         stage.setTitle("Parts Add");
         stage.setScene(scene);
         stage.show();
+        //close current window
+        ((Stage)((Node)event.getSource()).getScene().getWindow()).close();
+        
     }
     
     @FXML
-    private void partsModifyButtonOnClick()throws IOException{
+    private void partsModifyButtonOnClick(ActionEvent event)throws IOException{
         try{
-            ModifyPartGController modifyPartController;
-            ModifyPartOutController modifyPartOutController;
+            ModifyPartController modifyPartController;
             FXMLLoader loader = new FXMLLoader();
-
+            
             if(partsTable.getSelectionModel().getSelectedItem() instanceof InHouse){
-                loader.setLocation(getClass().getResource("/View/ModifyPartG.fxml"));
-                loader.load();
-                modifyPartController = loader.getController();
-                modifyPartController.sendPart(partsTable.getSelectionModel().getSelectedItem());
+                loader.setLocation(getClass().getResource("/View/ModifyPart.fxml"));
             } else {
                 loader.setLocation(getClass().getResource("/View/ModifyPartOut.fxml"));
-                loader.load();
-                modifyPartOutController = loader.getController();
-                modifyPartOutController.sendPart(partsTable.getSelectionModel().getSelectedItem());
             }
-
-            Stage stage = (Stage) partsModifyButton.getScene().getWindow();
-            Parent root = loader.getRoot();
+            
+            Parent root = loader.load();
+            modifyPartController = loader.getController();
+            modifyPartController.sendPart(partsTable.getSelectionModel().getSelectedItem());
+            
             Scene scene = new Scene(root);
-
+            Stage stage = new Stage();
             stage.setTitle("Parts Modify");
-
             stage.setScene(scene);
             stage.show();
+            //close current window
+            ((Stage)((Node)event.getSource()).getScene().getWindow()).close();
         } catch (NullPointerException e) {
+            System.out.println("NullPointerException at partsModifyButtonOnClick");
         }
     }
     
@@ -149,6 +146,7 @@ public class MainScreenController implements Initializable {
         try{
             inventory.deletePart(partsTable.getSelectionModel().getSelectedItem());
         } catch (NullPointerException e) {
+            System.out.println("Nullponter Error in partsDeleteButton");
         }
     }
     
@@ -170,7 +168,7 @@ public class MainScreenController implements Initializable {
     }
     
     @FXML
-    private void productsAddButtonOnClick() throws Exception {
+    private void productsAddButtonOnClick(ActionEvent event) throws Exception {
         int nextId;
         try{
             nextId = (inventory.getAllProducts().stream().max((a,b) -> a.getId() - b.getId()).get().getId()) + 1;
@@ -179,40 +177,37 @@ public class MainScreenController implements Initializable {
         }
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("/View/AddProduct.fxml"));
-        loader.load();
+        Parent root = loader.load();
+        
         AddProductController addProductController = loader.getController();
         addProductController.setNextId(nextId);
         
-        Stage stageOld = (Stage) productsAddButton.getScene().getWindow();
-        stageOld.close();
-        
-        Stage stage = new Stage();
-        Scene scene = new Scene(loader.getRoot());
-        
+        Scene scene = new Scene(root);
+        Stage stage = new Stage();        
         stage.setTitle("Product Add");
         stage.setScene(scene);
         stage.show();
+        ((Stage)((Node)event.getSource()).getScene().getWindow()).close();
     }
     
     @FXML
-    private void productsModifyButtonOnClick()throws Exception {        
+    private void productsModifyButtonOnClick(ActionEvent event)throws Exception {        
         try{
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(getClass().getResource("/View/ModifyProduct.fxml"));
-            loader.load();
+            Parent root = loader.load();
 
             ModifyProductController modifyProductController = loader.getController();
             modifyProductController.sendProduct(productsTable.getSelectionModel().getSelectedItem());
 
-            Stage oldStage = (Stage) productsModifyButton.getScene().getWindow();
-            oldStage.close();
-
+            Scene scene = new Scene(root);
             Stage stage = new Stage();
-            Scene scene = new Scene(loader.getRoot());
-
             stage.setTitle("Product Modify");
             stage.setScene(scene);
             stage.show();
+            //close current window
+            ((Stage)((Node)event.getSource()).getScene().getWindow()).close();
+            
         } catch (NullPointerException e) {
         }
     }

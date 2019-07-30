@@ -19,6 +19,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
@@ -30,7 +31,7 @@ import javafx.stage.Stage;
 /**
  * FXML Controller class
  *
- * @author Ayumu Suzuki <asuzuk2@wgu.edu>
+ * @author A Suzuki
  */
 public class ModifyProductController implements Initializable {
     @FXML private TextField id;
@@ -79,23 +80,14 @@ public class ModifyProductController implements Initializable {
     }    
 
     @FXML
-    private void cancelButtonOnAction(ActionEvent event) {
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("/View/MainScreen.fxml"));
-        try {
-            loader.load();
-        } catch (IOException ex) {
-            Logger.getLogger(AddProductController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-        Stage oldStage = (Stage) cancelButton.getScene().getWindow();
-        oldStage.close();
-        
+    private void cancelButtonOnAction(ActionEvent event) throws IOException {
+        Scene scene = new Scene(FXMLLoader.load(getClass().getResource("/View/MainScreen.fxml")));
         Stage stage = new Stage();
-        Scene scene = new Scene(loader.getRoot());
         stage.setTitle("Main");
         stage.setScene(scene);
         stage.show();        
+        //Close current window
+        ((Stage)((Node)event.getSource()).getScene().getWindow()).close();
     }
     
     @FXML
@@ -115,6 +107,7 @@ public class ModifyProductController implements Initializable {
             assocTable.setItems(assocPart);
         }
     }
+    
     @FXML
     private void saveButtonOnAction(ActionEvent event) throws IOException {
         int assocIdArg;
@@ -158,7 +151,7 @@ public class ModifyProductController implements Initializable {
             Scene popScene = new Scene(popLoader.getRoot());
             popUp.setScene(popScene);
             popUp.setTitle("Error");
-            popUp.show();
+            popUp.showAndWait();
         } else if(assocPriceArg < assocTable.getItems().stream().map(a->a.getPrice()).reduce(0.0, (a,b)->a+b)){
             FXMLLoader popLoader = new FXMLLoader();
             popLoader.setLocation(getClass().getResource("/View/popup.fxml"));
@@ -170,7 +163,7 @@ public class ModifyProductController implements Initializable {
             Scene popScene = new Scene(popLoader.getRoot());
             popUp.setScene(popScene);
             popUp.setTitle("Error");
-            popUp.show();
+            popUp.showAndWait();
         } else {
             Product newProduct = new Product(assocIdArg, name.getText(), assocPriceArg,
                 assocInvArg, assocMinArg, assocMaxArg);
@@ -187,23 +180,14 @@ public class ModifyProductController implements Initializable {
                 }
             }
             inventory.updateProduct(index, newProduct);
-
-            Stage oldStage = (Stage) cancelButton.getScene().getWindow();
-            oldStage.close();
-
-            FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(getClass().getResource("/View/MainScreen.fxml"));
-            try {
-                loader.load();
-            } catch (IOException ex) {
-                Logger.getLogger(AddProductController.class.getName()).log(Level.SEVERE, null, ex);
-            }
-
+            
+            Scene scene = new Scene(FXMLLoader.load(getClass().getResource("/View/MainScreen.fxml")));
             Stage stage = new Stage();
             stage.setTitle("Main");
-            Scene scene = new Scene(loader.getRoot());
             stage.setScene(scene);
-            stage.show();    
+            stage.show();
+            //Close current window
+            ((Stage)((Node)event.getSource()).getScene().getWindow()).close();
         }
     }
 

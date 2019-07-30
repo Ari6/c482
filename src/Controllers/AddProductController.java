@@ -11,14 +11,14 @@ import c482.Product;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
@@ -30,7 +30,7 @@ import javafx.stage.Stage;
 /**
  * FXML Controller class
  *
- * @author Ayumu Suzuki <asuzuk2@wgu.edu>
+ * @author A Suzuki
  */
 public class AddProductController implements Initializable {
     @FXML private TextField id;
@@ -96,23 +96,14 @@ public class AddProductController implements Initializable {
     }
 
     @FXML
-    private void cancelButtonOnAction(ActionEvent event) {
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("/View/MainScreen.fxml"));
-        try {
-            loader.load();
-        } catch (IOException ex) {
-            Logger.getLogger(AddProductController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-        Stage oldStage = (Stage) cancelButton.getScene().getWindow();
-        oldStage.close();
-        
+    private void cancelButtonOnAction(ActionEvent event) throws IOException {
+        Scene scene = new Scene(FXMLLoader.load(getClass().getResource("/View/MainScreen.fxml")));
         Stage stage = new Stage();
-        Scene scene = new Scene(loader.getRoot());
         stage.setTitle("Main");
         stage.setScene(scene);
         stage.show();
+        //close current windos
+        ((Stage)((Node)event.getSource()).getScene().getWindow()).close();
         
     }
 
@@ -151,15 +142,15 @@ public class AddProductController implements Initializable {
         if(assocInvArg < assocMinArg || assocInvArg > assocMaxArg){
             FXMLLoader popLoader = new FXMLLoader();
             popLoader.setLocation(getClass().getResource("/View/popup.fxml"));
-            popLoader.load();
+            Parent popRoot = popLoader.load();
             
             PopupController popCon = popLoader.getController();
             popCon.setMessage("You have to set inventory between min and max.");
             Stage popUp = new Stage();
-            Scene popScene = new Scene(popLoader.getRoot());
+            Scene popScene = new Scene(popRoot);
             popUp.setScene(popScene);
             popUp.setTitle("Error");
-            popUp.show();
+            popUp.showAndWait();
         } else if(assocPriceArg < assocTable.getItems().stream().map(a->a.getPrice()).reduce(0.0, (a,b)->a+b)){
             FXMLLoader popLoader = new FXMLLoader();
             popLoader.setLocation(getClass().getResource("/View/popup.fxml"));
@@ -171,7 +162,7 @@ public class AddProductController implements Initializable {
             Scene popScene = new Scene(popLoader.getRoot());
             popUp.setScene(popScene);
             popUp.setTitle("Error");
-            popUp.show();
+            popUp.showAndWait();
         } else {
             Product newProduct = new Product(assocIdArg, name.getText(), assocPriceArg,
                 assocInvArg, assocMinArg, assocMaxArg);
@@ -180,22 +171,16 @@ public class AddProductController implements Initializable {
                 inventory.getAllProducts().get(inventory.getAllProducts().indexOf(newProduct)).addAssociatedPart(p);
             }
 
-            Stage oldStage = (Stage) saveButton.getScene().getWindow();
-            oldStage.close();
-
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(getClass().getResource("/View/MainScreen.fxml"));
-            try {
-                loader.load();
-            } catch (IOException ex) {
-                Logger.getLogger(AddProductController.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            Parent root = FXMLLoader.load(getClass().getResource("/View/MainScreen.fxml"));
+            Scene scene = new Scene(root);
 
             Stage stage = new Stage();
             stage.setTitle("Main");
-            Scene scene = new Scene(loader.getRoot());
             stage.setScene(scene);
             stage.show();
+            //close current window
+            ((Stage)((Node)event.getSource()).getScene().getWindow()).close();
         }
         
     }

@@ -20,7 +20,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.ModifyPartController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.AddPartController">
    <center>
       <GridPane prefHeight="268.0" prefWidth="437.0" BorderPane.alignment="CENTER">
         <columnConstraints>
@@ -44,6 +44,7 @@
             <Label text="Price/Cost" GridPane.rowIndex="3" />
             <Label text="Max" GridPane.rowIndex="4" />
             <Label text="Min" GridPane.columnIndex="2" GridPane.rowIndex="4" />
+            <Label text="Machine ID" GridPane.rowIndex="5" />
             <TextField fx:id="partId" disable="true" editable="false" GridPane.columnIndex="1">
                <GridPane.margin>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
@@ -74,20 +75,18 @@
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </GridPane.margin>
             </TextField>
-            <TextField fx:id="companyName" GridPane.columnIndex="1" GridPane.rowIndex="5">
+            <TextField fx:id="machineId" GridPane.columnIndex="1" GridPane.rowIndex="5">
                <GridPane.margin>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </GridPane.margin>
             </TextField>
-            <Label text="Company Name" GridPane.rowIndex="5" />
-            <TextField fx:id="machineId" editable="false" focusTraversable="false" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="5" />
          </children>
       </GridPane>
    </center>
    <top>
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
-            <Label text="Modify Part" textFill="#27127a">
+            <Label text="Add Part" textFill="#27127a">
                <font>
                   <Font name="System Bold" size="24.0" />
                </font>
@@ -96,7 +95,7 @@
                </HBox.margin>
             </Label>
             <Label prefHeight="17.0" prefWidth="72.0" />
-            <RadioButton fx:id="inHouseRadioButton" mnemonicParsing="false" onAction="#inHouseRadioButtonOnAction" text="In-House">
+            <RadioButton fx:id="inHouse" mnemonicParsing="false" onAction="#inHouseSelect" selected="true" text="In-House">
                <padding>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </padding>
@@ -104,7 +103,7 @@
                   <ToggleGroup fx:id="A" />
                </toggleGroup>
             </RadioButton>
-            <RadioButton fx:id="outsourcedRadioButton" mnemonicParsing="false" onAction="#outsourcedRadioButtonOnAction" selected="true" text="Outsourced" toggleGroup="$A">
+            <RadioButton fx:id="outsourced" mnemonicParsing="false" onAction="#outsourcedSelect" text="Outsourced" toggleGroup="$A">
                <opaqueInsets>
                   <Insets />
                </opaqueInsets>

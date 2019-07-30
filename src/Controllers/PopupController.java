@@ -16,7 +16,7 @@ import javafx.stage.Stage;
 /**
  * FXML Controller class
  *
- * @author Ayumu Suzuki <asuzuk2@wgu.edu>
+ * @author A Suzuki
  */
 public class PopupController implements Initializable {
     @FXML private Label label;

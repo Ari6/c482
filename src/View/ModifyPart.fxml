@@ -44,6 +44,7 @@
             <Label text="Price/Cost" GridPane.rowIndex="3" />
             <Label text="Max" GridPane.rowIndex="4" />
             <Label text="Min" GridPane.columnIndex="2" GridPane.rowIndex="4" />
+            <Label text="Machine ID" GridPane.rowIndex="5" />
             <TextField fx:id="partId" disable="true" editable="false" GridPane.columnIndex="1">
                <GridPane.margin>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
@@ -74,13 +75,12 @@
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </GridPane.margin>
             </TextField>
-            <TextField fx:id="companyName" GridPane.columnIndex="1" GridPane.rowIndex="5">
+            <TextField fx:id="machineId" GridPane.columnIndex="1" GridPane.rowIndex="5">
                <GridPane.margin>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </GridPane.margin>
             </TextField>
-            <Label text="Company Name" GridPane.rowIndex="5" />
-            <TextField fx:id="machineId" editable="false" focusTraversable="false" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="5" />
+            <TextField fx:id="companyName" editable="false" focusTraversable="false" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="5" />
          </children>
       </GridPane>
    </center>
@@ -96,7 +96,7 @@
                </HBox.margin>
             </Label>
             <Label prefHeight="17.0" prefWidth="72.0" />
-            <RadioButton fx:id="inHouseRadioButton" mnemonicParsing="false" onAction="#inHouseRadioButtonOnAction" text="In-House">
+            <RadioButton fx:id="inHouseRadioButton" mnemonicParsing="false" onAction="#inHouseRadioButtonOnAction" selected="true" text="In-House">
                <padding>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </padding>
@@ -104,7 +104,7 @@
                   <ToggleGroup fx:id="A" />
                </toggleGroup>
             </RadioButton>
-            <RadioButton fx:id="outsourcedRadioButton" mnemonicParsing="false" onAction="#outsourcedRadioButtonOnAction" selected="true" text="Outsourced" toggleGroup="$A">
+            <RadioButton fx:id="outsourcedRadioButton" mnemonicParsing="false" onAction="#outsourcedRadioButtonOnAction" text="Outsourced" toggleGroup="$A">
                <opaqueInsets>
                   <Insets />
                </opaqueInsets>
